@@ -12,17 +12,17 @@
         :root {
             --bg: #0A0A0C;
             --text: #ffffff;
-            --accent: #FFD700; /* Золотой */
+            --accent: #FFD700;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         .light-theme {
-            --bg: #FFFFFF;
+            --bg: #F8F9FA;
             --text: #1a1a1a;
-            --accent: #FFD700;
+            --accent: #EAB308;
             --glass: rgba(0, 0, 0, 0.03);
-            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass-border: rgba(0, 0, 0, 0.1);
         }
 
         body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; transition: 0.3s; }
@@ -43,16 +43,19 @@
         .nav-btn { opacity: 0.3; transition: 0.3s; color: var(--text); }
         .nav-btn.active { opacity: 1; color: var(--accent); }
         
-        .scan-btn-main { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -30px; border: 4px solid var(--bg); box-shadow: 0 10px 20px rgba(255,215,0,0.3); }
+        .scan-btn-main { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -30px; border: 4px solid var(--bg); box-shadow: 0 10px 20px rgba(255,215,0,0.2); }
         
         .loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; justify-content: center; align-items: center; }
         .loader { width: 35px; height: 35px; border: 3px solid var(--glass-border); border-left-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        .task-row { border-bottom: 1px solid var(--glass-border); padding: 12px 0; display: flex; justify-content: space-between; align-items: center; }
+        .task-row { border-bottom: 1px solid var(--glass-border); padding: 14px 0; display: flex; justify-content: space-between; align-items: center; }
         .earn-tab-btn { opacity: 0.4; border-bottom: 2px solid transparent; transition: 0.3s; white-space: nowrap; padding-bottom: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .earn-tab-btn.active { opacity: 1; border-color: var(--accent); color: var(--accent); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .leader-item { padding: 15px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: var(--glass); border: 1px solid var(--glass-border); }
+        .pos-1 { border-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
     </style>
 </head>
 <body class="pb-28">
@@ -62,7 +65,7 @@
     <!-- 1️⃣ РЕГИСТРАЦИЯ -->
     <section id="registration-screen">
         <div class="text-center mt-10 mb-10">
-            <h2 class="font-unbounded text-2xl font-black italic text-gold" style="color: var(--accent)">DOSTEAM</h2>
+            <h2 class="font-unbounded text-2xl font-black italic" style="color: var(--accent)">DOSTEAM</h2>
             <p id="reg-subtitle" class="text-gray-500 text-sm italic mt-2">Регистрация в системе</p>
         </div>
         <input type="text" id="reg-name" class="input-field" placeholder="Имя и Фамилия">
@@ -75,7 +78,7 @@
         <button onclick="submitRegistration()" id="btn-create-acc" class="w-full py-5 gold-gradient rounded-3xl font-unbounded text-[10px] font-black uppercase tracking-widest mt-4 text-black shadow-lg">Создать аккаунт</button>
     </section>
 
-    <!-- 2️⃣ ПРОФИЛЬ / НАСТРОЙКИ -->
+    <!-- 2️⃣ ПРОФИЛЬ / НАСТРОЕК -->
     <section id="profile-settings" class="no-scrollbar overflow-y-auto">
         <div class="flex justify-between items-center mb-8">
             <button onclick="closeProfile()" class="opacity-50"><i class="fas fa-chevron-left text-xl"></i></button>
@@ -95,15 +98,15 @@
 
         <p class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-4">Тема / Theme</p>
         <div class="flex gap-3 mb-8">
-            <button onclick="setTheme('dark')" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase border-yellow-500/50">Dark 🌑</button>
-            <button onclick="setTheme('light')" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase border-white/10">Light ☀️</button>
+            <button onclick="setTheme('dark')" id="theme-dark" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase">Dark 🌑</button>
+            <button onclick="setTheme('light')" id="theme-light" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase">Light ☀️</button>
         </div>
 
         <p id="label-lang" class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-4">Язык / Тіл</p>
         <div class="flex flex-col gap-2 mb-10">
-            <button onclick="setLanguage('RU')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic">Русский 🇷🇺</button>
-            <button onclick="setLanguage('KZ')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic">Қазақша 🇰🇿</button>
-            <button onclick="setLanguage('EN')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic">English 🇺🇸</button>
+            <button onclick="setLanguage('RU')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic italic">Русский 🇷🇺</button>
+            <button onclick="setLanguage('KZ')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic italic">Қазақша 🇰🇿</button>
+            <button onclick="setLanguage('EN')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic italic">English 🇺🇸</button>
         </div>
 
         <button onclick="closeProfile()" id="btn-save" class="w-full py-5 gold-gradient rounded-3xl font-black text-[10px] uppercase text-black shadow-xl">Сохранить</button>
@@ -115,20 +118,20 @@
             <div class="flex items-center gap-3" onclick="openProfile()">
                 <div id="current-avatar" class="w-12 h-12 rounded-2xl gold-gradient flex items-center justify-center border-2 border-white/10 overflow-hidden text-black"><i class="fas fa-user"></i></div>
                 <div>
-                    <h1 id="user-name" class="text-sm font-bold italic">...</h1>
+                    <h1 id="user-name" class="text-sm font-bold italic italic">...</h1>
                     <p id="user-rank" class="text-[9px] font-black uppercase" style="color: var(--accent)">Rookie</p>
                 </div>
             </div>
-            <p id="user-group" class="text-[10px] font-black opacity-40 uppercase tracking-tighter">...</p>
+            <p id="user-group" class="text-[10px] font-black opacity-40 uppercase tracking-tighter italic">...</p>
         </header>
 
         <main class="px-6">
             <!-- DASHBOARD -->
             <section id="dashboard" class="tab-content active">
-                <div class="glass-card p-10 text-center relative overflow-hidden mb-6 border-yellow-500/10 shadow-2xl shadow-yellow-500/5">
+                <div class="glass-card p-10 text-center relative overflow-hidden mb-6 border-yellow-500/10 shadow-2xl">
                     <p id="label-balance" class="text-[9px] text-gray-500 uppercase font-black mb-4 tracking-widest">Баланс</p>
-                    <div class="flex justify-center items-end gap-2 mb-6">
-                        <span id="balance" class="text-6xl font-unbounded font-black tracking-tighter">0</span>
+                    <div class="flex justify-center items-end gap-2 mb-6 text-white italic italic">
+                        <span id="balance" class="text-6xl font-unbounded font-black tracking-tighter text-white">0</span>
                         <span class="font-bold mb-1" style="color: var(--accent)">DC</span>
                     </div>
                     <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden"><div id="progress" class="h-full gold-gradient" style="width: 0%"></div></div>
@@ -137,65 +140,53 @@
                 <div id="history-list" class="space-y-3"></div>
             </section>
 
-            <!-- EARN (ALL TASKS) -->
+            <!-- EARN (TASKS) -->
             <section id="earn" class="tab-content">
-                <div class="flex gap-4 overflow-x-auto no-scrollbar mb-6 border-b border-white/5 italic font-bold">
-                    <button id="tab-comm" onclick="showSubTab('sub-comm')" class="earn-tab-btn active flex-none">Community</button>
-                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none">Event</button>
-                    <button id="tab-debate" onclick="showSubTab('sub-debate')" class="earn-tab-btn flex-none">Debate</button>
-                    <button id="tab-gen" onclick="showSubTab('sub-gen')" class="earn-tab-btn flex-none">Общие</button>
+                <div class="flex gap-4 overflow-x-auto no-scrollbar mb-6 border-b border-white/5 italic italic font-bold">
+                    <button id="tab-comm" onclick="showSubTab('sub-comm')" class="earn-tab-btn active flex-none italic">Community</button>
+                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none italic">Event</button>
+                    <button id="tab-debate" onclick="showSubTab('sub-debate')" class="earn-tab-btn flex-none italic">Debate</button>
+                    <button id="tab-gen" onclick="showSubTab('sub-gen')" class="earn-tab-btn flex-none italic">Общие</button>
                 </div>
 
-                <!-- COMMUNITY -->
-                <div id="sub-comm" class="sub-tab-content active space-y-4 pb-10 italic">
-                    <div class="glass-card p-4 space-y-3">
-                        <div class="task-row"><span>Пришел на встречу</span><button onclick="openProofModal('Пришел на встречу', 10)" class="text-yellow-500 font-bold text-[10px]">+10 DC</button></div>
-                        <div class="task-row"><span>Регистрация заранее</span><button onclick="openProofModal('Заранее', 3)" class="text-yellow-500 font-bold text-[10px]">+3 DC</button></div>
-                        <div class="task-row"><span>Задал вопрос спикеру</span><button onclick="openProofModal('Вопрос спикеру', 5)" class="text-yellow-500 font-bold text-[10px]">+5 DC</button></div>
-                        <div class="task-row"><span>Привел друга</span><button onclick="openProofModal('Привел друга', 15)" class="text-yellow-500 font-bold text-[10px]">+15 DC</button></div>
-                    </div>
+                <div id="sub-comm" class="sub-tab-content active space-y-3">
+                    <div class="glass-card p-4 task-row"><span>Пришел на встречу</span><button onclick="openProofModal('Пришел на встречу', 10)" class="text-yellow-500 font-bold text-[10px]">+10 DC</button></div>
+                    <div class="glass-card p-4 task-row"><span>Привел друга</span><button onclick="openProofModal('Привел друга', 15)" class="text-yellow-500 font-bold text-[10px]">+15 DC</button></div>
                 </div>
 
-                <!-- EVENT -->
-                <div id="sub-event" class="sub-tab-content space-y-4 pb-10 italic">
-                    <div class="glass-card p-4 space-y-3">
-                        <div class="task-row"><span>Помощь на регистрации</span><button onclick="openProofModal('Рега', 10)" class="text-yellow-500 font-bold text-[10px]">+10 DC</button></div>
-                        <div class="task-row"><span>Нашел подрядчика</span><button onclick="openProofModal('Подрядчик', 20)" class="text-yellow-500 font-bold text-[10px]">+20 DC</button></div>
-                        <div class="task-row"><span class="font-black">Ивент под ключ</span><button onclick="openProofModal('Под ключ', 50)" class="text-yellow-500 font-bold text-[10px]">+50 DC</button></div>
+                <div id="sub-event" class="sub-tab-content space-y-3">
+                    <div class="glass-card p-4 task-row"><span>Помощь в орг.</span><button onclick="openProofModal('Орг помощь', 10)" class="text-yellow-500 font-bold text-[10px]">+10 DC</button></div>
+                    <div class="glass-card p-4 task-row"><span>Ивент под ключ</span><button onclick="openProofModal('Ивент под ключ', 50)" class="text-yellow-500 font-bold text-[10px]">+50 DC</button></div>
+                </div>
+                
+                <div id="sub-gen" class="sub-tab-content space-y-3">
+                    <div class="glass-card p-6 border-2 border-yellow-500/20 flex justify-between items-center bg-yellow-500/5">
+                        <div><p class="text-xs font-black uppercase italic italic">Амбассадор</p></div>
+                        <button onclick="openProofModal('Амбассадор', 100)" class="px-5 py-2 gold-gradient rounded-xl text-black font-black text-[10px] italic">+100 DC</button>
                     </div>
                 </div>
+            </section>
 
-                <!-- DEBATE -->
-                <div id="sub-debate" class="sub-tab-content space-y-4 pb-10 italic">
-                    <div class="glass-card p-4 space-y-3">
-                        <div class="task-row"><span>Участие в дебатах</span><button onclick="openProofModal('Участие дебаты', 15)" class="text-yellow-500 font-bold text-[10px]">+15 DC</button></div>
-                        <div class="task-row"><span class="font-black">Победа в дебатах</span><button onclick="openProofModal('Победа дебаты', 30)" class="text-yellow-500 font-bold text-[10px]">+30 DC</button></div>
-                    </div>
-                </div>
-
-                <!-- GENERAL -->
-                <div id="sub-gen" class="sub-tab-content space-y-4 pb-10 italic">
-                    <div class="glass-card p-6 border-2 border-yellow-500/20 bg-yellow-500/5">
-                        <div class="flex justify-between items-center">
-                            <div><p class="text-xs font-black uppercase">Амбассадор</p><p class="text-[8px] opacity-50">Главный вклад</p></div>
-                            <button onclick="openProofModal('Амбассадор', 100)" class="px-5 py-2 gold-gradient rounded-xl text-black font-black text-[10px]">+100 DC</button>
-                        </div>
-                    </div>
+            <!-- RATING (LEADERBOARD) -->
+            <section id="rating" class="tab-content">
+                <h2 class="font-unbounded text-xl font-black mb-6 italic italic uppercase">Ranking Top 20</h2>
+                <div id="leaderboard-list">
+                    <!-- Лидеры из таблицы -->
                 </div>
             </section>
 
             <!-- SHOP -->
             <section id="shop" class="tab-content">
-                <h2 class="text-xl font-unbounded font-black mb-6 italic">Shop</h2>
-                <div class="glass-card p-6 flex justify-between items-center mb-4">
-                    <div><h3 class="font-bold text-xs uppercase">Закрытый чат</h3><p class="text-[8px] opacity-50">Доступ в ядро</p></div>
-                    <button class="px-4 py-2 border border-yellow-500/30 rounded-lg text-[9px] font-black uppercase">100 DC</button>
+                <h2 class="text-xl font-unbounded font-black mb-6 italic italic italic">Market</h2>
+                <div class="glass-card p-6 flex justify-between items-center mb-4 italic">
+                    <div><h3 class="font-bold text-xs uppercase italic italic">Чат Core</h3><p class="text-[8px] opacity-50 italic">Доступ в ядро</p></div>
+                    <button class="px-4 py-2 border border-yellow-500/30 rounded-lg text-[9px] font-black uppercase italic italic">100 DC</button>
                 </div>
             </section>
         </main>
 
         <!-- МЕНЮ -->
-        <nav class="fixed bottom-6 left-6 right-6 glass-card p-2 flex justify-around items-center z-50 shadow-2xl bg-zinc-900/60 backdrop-blur-xl border-white/5">
+        <nav class="fixed bottom-6 left-6 right-6 glass-card p-2 flex justify-around items-center z-50 shadow-2xl bg-zinc-900/60 backdrop-blur-xl border-white/5 italic">
             <button onclick="showTab('dashboard')" class="nav-btn active flex-1 flex flex-col items-center"><i class="fas fa-wallet text-lg"></i></button>
             <button onclick="showTab('earn')" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-bolt-lightning text-lg"></i></button>
             
@@ -203,19 +194,19 @@
                 <i class="fas fa-qrcode text-xl"></i>
             </button>
             
+            <button onclick="showTab('rating')" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-trophy text-lg"></i></button>
             <button onclick="openProfile()" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-gear text-lg"></i></button>
         </nav>
     </div>
 
     <!-- Proof Modal -->
-    <div id="proof-modal" class="fixed inset-0 bg-black/95 z-[10001] hidden items-center justify-center p-6 backdrop-blur-xl">
+    <div id="proof-modal" class="fixed inset-0 bg-black/95 z-[10001] hidden items-center justify-center p-6 backdrop-blur-xl italic italic">
         <div class="glass-card p-8 w-full max-w-sm border-yellow-500/20 shadow-2xl">
-            <h3 class="font-unbounded text-[10px] mb-2 text-yellow-500 font-bold uppercase italic">Верификация</h3>
-            <p class="text-[9px] text-gray-500 mb-6 italic italic">Вставь ссылку на отчет или опиши результат:</p>
-            <textarea id="proof-input" class="w-full h-32 bg-black/40 border border-white/10 rounded-2xl p-4 text-xs text-white outline-none focus:border-yellow-500 mb-6 italic" placeholder="Напиши здесь..."></textarea>
+            <h3 class="font-unbounded text-[10px] mb-2 text-yellow-500 font-bold uppercase italic italic italic">Верификация</h3>
+            <textarea id="proof-input" class="w-full h-32 bg-black/40 border border-white/10 rounded-2xl p-4 text-xs text-white outline-none focus:border-yellow-500 mb-6 italic italic italic" placeholder="Ссылка на отчет..."></textarea>
             <div class="flex gap-4">
-                <button onclick="document.getElementById('proof-modal').style.display='none'" class="flex-1 text-[10px] font-black uppercase opacity-40">Cancel</button>
-                <button onclick="submitTaskWithProof()" class="flex-1 py-4 gold-gradient rounded-2xl text-[10px] font-black uppercase text-black">Submit</button>
+                <button onclick="document.getElementById('proof-modal').style.display='none'" class="flex-1 text-[10px] font-black uppercase opacity-40 italic">Cancel</button>
+                <button onclick="submitTaskWithProof()" class="flex-1 py-4 gold-gradient rounded-2xl text-[10px] font-black uppercase text-black italic">Submit</button>
             </div>
         </div>
     </div>
@@ -223,7 +214,7 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const API_URL = "https://script.google.com/macros/s/AKfycbzjb-F35Xe5AGO_2gRHEt4gINpdzDWvavj9_HUCPEDziHPrYaWe_a4075JhFo5x2UtW/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzoMduPawr8nZZO_0IwBGKQ-dFulCEeQXdL_TKEoxrD8URLjCWnaOz3oWirE1vXgREk/exec";
 
         const i18n = {
             RU: { reg_sub: "Регистрация в системе", create: "Создать аккаунт", settings: "Настройки", avatar: "Аватар", lang: "Язык", save: "Сохранить", balance: "Баланс", history: "История", mining: "Задания" },
@@ -242,14 +233,47 @@
             document.getElementById('btn-save').innerText = t.save;
             document.getElementById('label-balance').innerText = t.balance;
             document.getElementById('history-title').innerText = t.history;
-            tg.HapticFeedback.impactOccurred('light');
         }
 
         function setTheme(mode) {
-            if(mode === 'light') document.body.classList.add('light-theme');
-            else document.body.classList.remove('light-theme');
+            if(mode === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('theme-light').classList.add('border-yellow-500');
+                document.getElementById('theme-dark').classList.remove('border-yellow-500');
+            } else {
+                document.body.classList.remove('light-theme');
+                document.getElementById('theme-dark').classList.add('border-yellow-500');
+                document.getElementById('theme-light').classList.remove('border-yellow-500');
+            }
             localStorage.setItem('dosteam_theme', mode);
-            tg.setHeaderColor(mode === 'light' ? '#FFFFFF' : '#0A0A0C');
+            tg.setHeaderColor(mode === 'light' ? '#F8F9FA' : '#0A0A0C');
+        }
+
+        async function loadLeaderboard() {
+            try {
+                const res = await fetch(`${API_URL}?action=getLeaderboard`);
+                const data = await res.json();
+                const list = document.getElementById('leaderboard-list');
+                list.innerHTML = data.map((user, index) => {
+                    let crown = '';
+                    if(index === 0) crown = '👑';
+                    else if(index === 1) crown = '🥈';
+                    else if(index === 2) crown = '🥉';
+
+                    return `
+                        <div class="leader-item ${index === 0 ? 'pos-1' : ''} italic italic">
+                            <div class="flex items-center gap-4">
+                                <span class="text-[10px] font-black opacity-30 italic">${index + 1}</span>
+                                <div>
+                                    <p class="text-xs font-bold italic italic">${crown} ${user.name}</p>
+                                    <p class="text-[8px] opacity-40 uppercase italic italic italic italic">${user.unit}</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-black italic italic italic italic" style="color: var(--accent)">${user.balance} DC</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) { console.error(e); }
         }
 
         function startScan() {
@@ -259,26 +283,12 @@
             });
         }
 
-        function uploadPhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('current-avatar').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                    localStorage.setItem('custom_photo', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
         async function syncData() {
             const user = tg.initDataUnsafe.user || { id: "123456", first_name: "Admin" };
-            const customPhoto = localStorage.getItem('custom_photo');
             const lang = localStorage.getItem('dosteam_lang') || 'RU';
             const theme = localStorage.getItem('dosteam_theme') || 'dark';
             setLanguage(lang);
             setTheme(theme);
-
-            if (customPhoto) document.getElementById('current-avatar').innerHTML = `<img src="${customPhoto}" class="w-full h-full object-cover">`;
 
             try {
                 const res = await fetch(`${API_URL}?action=getUser&id=${user.id}`);
@@ -288,6 +298,7 @@
                     document.getElementById('registration-screen').style.display = 'flex';
                 } else {
                     renderApp(data);
+                    loadLeaderboard();
                     document.getElementById('loader').style.display = 'none';
                 }
             } catch (e) { document.getElementById('loader').style.display = 'none'; }
@@ -311,7 +322,7 @@
             document.getElementById('balance').innerText = data.balance;
             document.getElementById('user-rank').innerText = data.rank;
             document.getElementById('progress').style.width = (data.balance % 100) + '%';
-            document.getElementById('history-list').innerHTML = (data.history || []).map(h => `<div class="glass-card p-4 flex justify-between items-center italic"><span>${h.action}</span><span style="color: var(--accent)" class="font-black">+${h.amount}</span></div>`).join('');
+            document.getElementById('history-list').innerHTML = (data.history || []).map(h => `<div class="glass-card p-4 flex justify-between items-center italic italic italic italic"><span>${h.action}</span><span style="color: var(--accent)" class="font-black">+${h.amount}</span></div>`).join('');
         }
 
         function showTab(id) {
@@ -319,6 +330,7 @@
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
+            if(id === 'rating') loadLeaderboard();
             tg.HapticFeedback.selectionChanged();
         }
 
