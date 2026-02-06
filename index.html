@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DOSTEAM | Digital Portal</title>
+    <title>DOSTEAM | Secure Portal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@
         .msg { padding: 10px 15px; border-radius: 18px; max-width: 80%; font-size: 13px; }
         .msg-other { background: var(--glass); align-self: flex-start; border-bottom-left-radius: 4px; }
         .msg-own { background: var(--accent); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 600; }
-        #registration-screen, #profile-settings { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; flex-direction: column; padding: 30px; overflow-y: auto; }
+        #registration-screen, #login-screen, #profile-settings { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; flex-direction: column; padding: 30px; overflow-y: auto; }
         .input-field { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 18px; padding: 16px; width: 100%; color: var(--text); outline: none; margin-bottom: 15px; }
         .btn-claim { background: rgba(255, 215, 0, 0.1); color: var(--accent); font-size: 10px; font-weight: 900; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--accent); text-transform: uppercase; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -43,27 +43,39 @@
 
     <div id="loader" class="loading-overlay"><div class="loader"></div></div>
 
-    <!-- 1️⃣ РЕГИСТРАЦИЯ -->
+    <!-- 1️⃣ ЭКРАН РЕГИСТРАЦИИ -->
     <section id="registration-screen">
         <div class="text-center mt-10 mb-10 italic">
-            <h2 class="font-unbounded text-2xl font-black italic" style="color: var(--accent)">DOSTEAM</h2>
-            <p id="reg-subtitle" class="text-gray-500 text-sm italic mt-2">Обновите данные профиля</p>
+            <h2 class="font-unbounded text-2xl font-black italic text-gold" style="color: var(--accent)">DOSTEAM</h2>
+            <p class="text-gray-500 text-sm italic mt-2">Создание нового аккаунта</p>
         </div>
-        <input type="text" id="reg-name" class="input-field italic" placeholder="Имя и Фамилия">
-        <input type="text" id="reg-group" class="input-field italic" placeholder="Группа (напр. ИТ-22)">
+        <input type="text" id="reg-name" class="input-field" placeholder="Имя и Фамилия">
+        <input type="text" id="reg-group" class="input-field" placeholder="Группа (ИТ-22, Э-23...)">
         <select id="reg-unit" class="input-field bg-zinc-900 text-white italic">
             <option value="Community">Community Unit</option>
             <option value="Event">Event Unit</option>
             <option value="Debate">Debate Unit</option>
         </select>
-        <button onclick="submitRegistration()" class="w-full py-5 gold-gradient rounded-3xl font-black text-black shadow-lg uppercase text-xs mt-4 italic">Сохранить и войти</button>
+        <input type="password" id="reg-pass" class="input-field" placeholder="Придумайте пароль">
+        <button onclick="submitRegistration()" class="w-full py-5 gold-gradient rounded-3xl font-black text-black shadow-lg uppercase text-xs mt-4">Зарегистрироваться</button>
+    </section>
+
+    <!-- 1️⃣.1️⃣ ЭКРАН ВХОДА (LOGIN) -->
+    <section id="login-screen">
+        <div class="text-center mt-10 mb-10 italic">
+            <h2 class="font-unbounded text-2xl font-black italic" style="color: var(--accent)">WELCOME BACK</h2>
+            <p class="text-gray-500 text-sm italic mt-2">Введите пароль для входа</p>
+        </div>
+        <input type="password" id="login-pass" class="input-field" placeholder="Твой пароль">
+        <button onclick="submitLogin()" class="w-full py-5 gold-gradient rounded-3xl font-black text-black shadow-lg uppercase text-xs mt-4 italic">Войти в Hub</button>
+        <p class="text-center text-[10px] text-gray-600 mt-6 italic">Забыли пароль? Обратитесь к куратору юнита.</p>
     </section>
 
     <!-- 2️⃣ ПРОФИЛЬ -->
-    <section id="profile-settings" class="no-scrollbar italic">
+    <section id="profile-settings" class="no-scrollbar">
         <div class="flex justify-between items-center mb-8 italic">
             <button onclick="closeProfile()" class="opacity-50"><i class="fas fa-chevron-left text-xl"></i></button>
-            <h2 id="settings-title" class="font-unbounded text-xs font-black uppercase italic">Настройки</h2>
+            <h2 class="font-unbounded text-xs font-black uppercase italic">Настройки</h2>
             <div style="width:20px"></div>
         </div>
         <p class="text-[10px] text-gray-500 uppercase font-black mb-4">Аватар</p>
@@ -74,18 +86,11 @@
             </label>
             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-[60px] h-[60px] rounded-2xl bg-zinc-800" onclick="selectAvatar(this.src)">
             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" class="w-[60px] h-[60px] rounded-2xl bg-zinc-800" onclick="selectAvatar(this.src)">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" class="w-[60px] h-[60px] rounded-2xl bg-zinc-800" onclick="selectAvatar(this.src)">
         </div>
-        <p class="text-[10px] text-gray-500 uppercase font-black mb-4">Тема</p>
-        <div class="flex gap-3 mb-8">
+        <p class="text-[10px] text-gray-500 uppercase font-black mb-4 italic">Тема</p>
+        <div class="flex gap-3 mb-8 italic">
             <button onclick="setTheme('dark')" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase">Dark</button>
             <button onclick="setTheme('light')" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase">Light</button>
-        </div>
-        <p class="text-[10px] text-gray-500 uppercase font-black mb-4">Язык</p>
-        <div class="flex flex-col gap-2 mb-10">
-            <button onclick="setLanguage('RU')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between">Русский 🇷🇺</button>
-            <button onclick="setLanguage('KZ')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between">Қазақша 🇰🇿</button>
-            <button onclick="setLanguage('EN')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between">English 🇺🇸</button>
         </div>
         <button onclick="closeProfile()" class="w-full py-5 gold-gradient rounded-3xl font-black text-black text-[10px] uppercase italic">Сохранить</button>
     </section>
@@ -95,112 +100,84 @@
         <header class="p-6 flex justify-between items-center italic">
             <div class="flex items-center gap-3" onclick="openProfile()">
                 <div id="current-avatar" class="w-11 h-11 rounded-2xl gold-gradient flex items-center justify-center border border-white/10 overflow-hidden text-black shadow-lg"><i class="fas fa-user"></i></div>
-                <div>
-                    <h1 id="user-name" class="text-sm font-bold italic italic">...</h1>
-                    <p id="user-rank" class="text-[9px] font-black uppercase" style="color: var(--accent)">Rookie</p>
-                </div>
+                <div><h1 id="user-name" class="text-sm font-bold italic italic">...</h1><p id="user-rank" class="text-[9px] font-black uppercase" style="color: var(--accent)">Rookie</p></div>
             </div>
-            <div class="text-right">
-                <p id="user-group" class="text-[10px] font-black opacity-30 uppercase tracking-tighter">...</p>
-                <p id="user-unit-top" class="text-[8px] font-bold text-gold uppercase" style="color: var(--accent)">...</p>
+            <div class="text-right italic">
+                <p id="user-group" class="text-[10px] font-black opacity-30 uppercase tracking-tighter italic">...</p>
+                <p id="user-unit-top" class="text-[8px] font-bold uppercase" style="color: var(--accent)">...</p>
             </div>
         </header>
 
         <main class="px-6 italic">
-            <!-- HUB -->
             <section id="dashboard" class="tab-content active italic">
-                <div class="glass-card p-10 text-center relative overflow-hidden mb-6 border-yellow-500/10 shadow-2xl">
-                    <p id="label-balance" class="text-[9px] text-gray-500 uppercase font-black mb-4 tracking-widest italic">Баланс</p>
-                    <div class="flex justify-center items-end gap-2 mb-6 italic">
-                        <span id="balance" class="text-6xl font-unbounded font-black tracking-tighter text-white">0</span>
-                        <span class="font-bold mb-1" style="color: var(--accent)">DC</span>
-                    </div>
-                    <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mb-2"><div id="progress" class="h-full gold-gradient transition-all duration-1000" style="width: 0%"></div></div>
-                    <p id="level-guide" class="text-[8px] text-gray-500 uppercase font-bold">Загрузка...</p>
+                <div class="glass-card p-10 text-center relative overflow-hidden mb-6 border-yellow-500/10 shadow-2xl italic">
+                    <p id="label-balance" class="text-[9px] text-gray-500 uppercase font-black mb-4 tracking-widest italic italic">Баланс</p>
+                    <div class="flex justify-center items-end gap-2 mb-6 italic italic"><span id="balance" class="text-6xl font-unbounded font-black tracking-tighter text-white">0</span><span class="font-bold mb-1" style="color: var(--accent)">DC</span></div>
+                    <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mb-2 italic"><div id="progress" class="h-full gold-gradient" style="width: 0%"></div></div>
+                    <p id="level-guide" class="text-[8px] text-gray-500 uppercase font-bold italic">Загрузка...</p>
                 </div>
-                <h2 id="history-title" class="text-[10px] font-black text-gray-500 uppercase mb-4 ml-1 tracking-widest italic">История</h2>
+                <h2 class="text-[10px] font-black text-gray-500 uppercase mb-4 ml-1 tracking-widest italic">История</h2>
                 <div id="history-list" class="space-y-3 italic"></div>
             </section>
 
-            <!-- MINING (ВСЕ ЗАДАНИЯ) -->
             <section id="earn" class="tab-content italic">
                 <div class="flex gap-4 overflow-x-auto no-scrollbar mb-6 border-b border-white/5 font-bold italic">
-                    <button id="tab-comm" onclick="showSubTab('sub-comm')" class="earn-tab-btn active flex-none">Community</button>
-                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none">Event</button>
-                    <button id="tab-debate" onclick="showSubTab('sub-debate')" class="earn-tab-btn flex-none">Debate</button>
-                    <button id="tab-gen" onclick="showSubTab('sub-gen')" class="earn-tab-btn flex-none">Общие</button>
+                    <button id="tab-comm" onclick="showSubTab('sub-comm')" class="earn-tab-btn active flex-none italic">Community</button>
+                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none italic">Event</button>
+                    <button id="tab-gen" onclick="showSubTab('sub-gen')" class="earn-tab-btn flex-none italic">Общие</button>
                 </div>
-
-                <!-- COMM -->
-                <div id="sub-comm" class="sub-tab-content active space-y-3 pb-10">
-                    <div class="glass-card p-4 task-row italic"><span>Пришел на встречу</span><button onclick="openProofModal('Пришел на встречу', 10)" class="btn-claim">+10 DC</button></div>
-                    <div class="task-row italic px-4"><span>Задал вопрос</span><button onclick="openProofModal('Вопрос спикеру', 5)" class="btn-claim">+5 DC</button></div>
-                    <div class="task-row italic px-4"><span>Привел друга</span><button onclick="openProofModal('Привел друга', 15)" class="btn-claim">+15 DC</button></div>
-                    <div class="task-row italic px-4"><span>Полезный пост</span><button onclick="openProofModal('Пост в чате', 5)" class="btn-claim">+5 DC</button></div>
-                    <div class="task-row italic px-4 font-bold"><span>Модерировал встречу</span><button onclick="openProofModal('Модератор', 25)" class="btn-claim">+25 DC</button></div>
+                <div id="sub-comm" class="sub-tab-content active space-y-3 pb-10 italic">
+                    <div class="glass-card p-4 task-row italic italic"><span>Пришел на встречу</span><button onclick="openProofModal('Встреча', 10)" class="btn-claim">+10 DC</button></div>
+                    <div class="task-row italic px-4 italic"><span>Привел друга</span><button onclick="openProofModal('Друг', 15)" class="btn-claim">+15 DC</button></div>
                 </div>
-
-                <!-- EVENT -->
-                <div id="sub-event" class="sub-tab-content space-y-3 pb-10">
-                    <div class="glass-card p-4 task-row italic"><span>Регистрация гостей</span><button onclick="openProofModal('Рега гостей', 10)" class="btn-claim">+10 DC</button></div>
-                    <div class="task-row italic px-4"><span>Нашел подрядчика</span><button onclick="openProofModal('Подрядчик', 20)" class="btn-claim">+20 DC</button></div>
-                    <div class="task-row italic px-4 font-black italic"><span>Ивент под ключ</span><button onclick="openProofModal('Ивент под ключ', 50)" class="btn-claim">+50 DC</button></div>
+                <div id="sub-event" class="sub-tab-content space-y-3 pb-10 italic">
+                    <div class="glass-card p-4 task-row italic"><span>Ивент под ключ</span><button onclick="openProofModal('Ивент', 50)" class="btn-claim">+50 DC</button></div>
                 </div>
-
-                <!-- DEBATE -->
-                <div id="sub-debate" class="sub-tab-content space-y-3 pb-10 italic">
-                    <div class="glass-card p-4 task-row"><span>Участие в дебатах</span><button onclick="openProofModal('Участие Дебаты', 15)" class="btn-claim">+15 DC</button></div>
-                    <div class="task-row px-4 font-black"><span>Победа в дебатах</span><button onclick="openProofModal('Победа Дебаты', 30)" class="btn-claim">+30 DC</button></div>
-                </div>
-
-                <!-- GEN -->
-                <div id="sub-gen" class="sub-tab-content space-y-4 pb-10 italic">
-                    <div class="glass-card p-6 border-2 border-yellow-500 bg-yellow-500/5">
-                        <div class="flex justify-between items-center italic italic">
-                            <div><p class="text-xs font-black uppercase italic italic">Амбассадор DOSTEAM</p></div>
+                <div id="sub-gen" class="sub-tab-content space-y-3 pb-10 italic">
+                    <div class="glass-card p-6 border-2 border-yellow-500/20 bg-yellow-500/5 italic italic italic">
+                        <div class="flex justify-between items-center">
+                            <div><p class="text-xs font-black uppercase italic">Амбассадор</p></div>
                             <button onclick="openProofModal('Амбассадор', 100)" class="px-5 py-2 gold-gradient rounded-xl text-black font-black text-[10px] shadow-lg">+100 DC</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SHOP -->
-            <section id="shop" class="tab-content italic italic">
+            <!-- SHOP (MARKET) -->
+            <section id="shop" class="tab-content italic">
                 <h2 class="font-unbounded text-xl font-black mb-6 uppercase italic">Market</h2>
-                <div class="space-y-4">
-                    <div class="glass-card p-6 flex justify-between items-center italic italic">
-                        <div><h3 class="font-bold text-xs uppercase italic italic italic">Чат Core</h3><p class="text-[9px] opacity-50 italic italic italic">Личный доступ</p></div>
-                        <button onclick="buyItem('Чат Core', 100)" class="px-5 py-2 border border-yellow-500/50 rounded-xl text-[10px] font-black uppercase text-gold" style="color: var(--accent)">100 DC</button>
+                <div class="space-y-4 italic">
+                    <div class="glass-card p-6 flex justify-between items-center italic">
+                        <div><h3 class="font-bold text-xs uppercase italic italic">Чат Core</h3><p class="text-[9px] opacity-50 italic">Доступ в ядро</p></div>
+                        <button onclick="buyItem('Чат Core', 100)" class="btn-claim">100 DC</button>
                     </div>
-                    <div class="glass-card p-6 border-2 border-yellow-500 bg-yellow-500/5">
-                        <div class="flex justify-between items-center">
-                            <div><h3 class="font-bold text-sm uppercase italic font-black text-gold" style="color: var(--accent)">Продюсирование</h3><button onclick="buyItem('Продюсирование', 1000)" class="px-5 py-3 gold-gradient rounded-xl text-black font-black text-[10px] shadow-lg mt-2">1000 DC</button></div>
-                        </div>
+                    <div class="glass-card p-6 border-2 border-yellow-500 bg-yellow-500/5 italic">
+                        <div><h3 class="font-bold text-sm uppercase italic font-black text-gold" style="color: var(--accent)">Продюсирование</h3><button onclick="buyItem('Продюсирование', 1000)" class="px-5 py-3 gold-gradient rounded-xl text-black font-black text-[10px] mt-2 italic shadow-lg">1000 DC</button></div>
                     </div>
                 </div>
             </section>
 
             <!-- RANKING -->
             <section id="rating" class="tab-content italic">
-                <h2 class="font-unbounded text-xl font-black mb-6 italic italic italic uppercase">Ranking</h2>
-                <div id="leaderboard-list"></div>
+                <h2 class="font-unbounded text-xl font-black mb-6 italic uppercase">Ranking</h2>
+                <div id="leaderboard-list" class="italic"></div>
             </section>
 
             <!-- WALL -->
             <section id="chat" class="tab-content italic">
-                <h2 class="font-unbounded text-xl font-black mb-4 italic italic italic uppercase">Wall</h2>
+                <h2 class="font-unbounded text-xl font-black mb-4 italic uppercase">Wall</h2>
                 <div id="chat-box" class="no-scrollbar italic italic"></div>
                 <div class="fixed bottom-24 left-6 right-6 flex gap-2">
-                    <input type="text" id="chat-input" class="input-field flex-1 mb-0 italic italic italic italic" placeholder="Твое сообщение...">
+                    <input type="text" id="chat-input" class="input-field flex-1 mb-0 italic italic" placeholder="Твое сообщение...">
                     <button onclick="sendMessage()" class="w-14 h-14 gold-gradient text-black rounded-2xl flex items-center justify-center shadow-lg"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </section>
         </main>
 
         <!-- MENU -->
-        <nav class="fixed bottom-6 left-6 right-6 glass-card p-2 flex justify-around items-center z-50 shadow-2xl bg-zinc-900/60 backdrop-blur-xl border-white/5 italic italic italic italic">
+        <nav class="fixed bottom-6 left-6 right-6 glass-card p-2 flex justify-around items-center z-50 shadow-2xl bg-zinc-900/60 backdrop-blur-xl border-white/5 italic italic italic">
             <button onclick="showTab('dashboard')" class="nav-btn active flex-1 flex flex-col items-center"><i class="fas fa-wallet text-lg"></i></button>
-            <button onclick="showTab('earn')" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-bolt text-lg"></i></button>
+            <button onclick="showTab('earn')" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-bolt-lightning text-lg"></i></button>
             <button onclick="startScan()" class="scan-btn-main gold-gradient text-black"><i class="fas fa-qrcode text-xl"></i></button>
             <button onclick="showTab('shop')" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-shopping-bag text-lg"></i></button>
             <button onclick="showTab('rating'); loadLeaderboard();" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-trophy text-lg"></i></button>
@@ -208,59 +185,38 @@
         </nav>
     </div>
 
-    <!-- MODAL -->
-    <div id="proof-modal" class="fixed inset-0 bg-black/95 z-[10001] hidden items-center justify-center p-6 backdrop-blur-xl italic italic italic">
-        <div class="glass-card p-8 w-full max-w-sm border-yellow-500/20 shadow-2xl italic italic italic">
-            <h3 class="font-unbounded text-[10px] mb-2 text-yellow-500 font-bold uppercase italic italic italic">Верификация</h3>
-            <textarea id="proof-input" class="w-full h-32 bg-black/40 border border-white/10 rounded-2xl p-4 text-xs text-white outline-none focus:border-yellow-500 mb-6 italic italic italic" placeholder="Ссылка на фото/отчет..."></textarea>
-            <div class="flex gap-4 italic italic italic italic"><button onclick="document.getElementById('proof-modal').style.display='none'" class="flex-1 text-[10px] font-black uppercase opacity-40">Cancel</button>
-            <button id="submit-proof-btn" onclick="submitTaskWithProof()" class="flex-1 py-4 gold-gradient rounded-2xl text-[10px] font-black text-black">Submit</button></div>
+    <!-- Proof Modal -->
+    <div id="proof-modal" class="fixed inset-0 bg-black/95 z-[10001] hidden items-center justify-center p-6 backdrop-blur-xl italic italic">
+        <div class="glass-card p-8 w-full max-w-sm border-yellow-500/20 shadow-2xl italic italic">
+            <h3 class="font-unbounded text-[10px] mb-2 text-yellow-500 font-bold uppercase italic italic">Верификация</h3>
+            <textarea id="proof-input" class="w-full h-32 bg-black/40 border border-white/10 rounded-2xl p-4 text-xs text-white outline-none focus:border-yellow-500 mb-6 italic" placeholder="Ссылка на отчет..."></textarea>
+            <div class="flex gap-4 italic italic"><button onclick="document.getElementById('proof-modal').style.display='none'" class="flex-1 text-[10px] font-black uppercase opacity-40">Отмена</button>
+            <button onclick="submitTaskWithProof()" class="flex-1 py-4 gold-gradient rounded-2xl text-[10px] font-black text-black italic">Submit</button></div>
         </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const API_URL = "https://script.google.com/macros/s/AKfycbwCwqm578Zt__QJ1_1pX3C5HpImDwf21w7ETHFIVLVqepYMM_x2wfkE0g6keLABNlYq/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbwM-FtoEvjKmrHFZ9uwUEWCfXT-RajlzaLFN5nuzWC0d5AQFe6qwexyza3Y6LCitjzO/exec";
         let userLocal = {};
         let currentTask = {};
-
-        const i18n = {
-            RU: { reg_sub: "Обновите данные профиля", create: "Сохранить и войти", settings: "Настройки", avatar: "Аватар", lang: "Язык", save: "Сохранить", balance: "Баланс", history: "История", mining: "Задания" },
-            KZ: { reg_sub: "Профильді жаңарту", create: "Сақтау және кіру", settings: "Баптаулар", avatar: "Аватар", lang: "Тіл", save: "Сақтау", balance: "Теңгерім", history: "Тарихы", mining: "Тапсырмалар" },
-            EN: { reg_sub: "Update Profile Data", create: "Save and Enter", settings: "Settings", avatar: "Avatar", lang: "Language", save: "Save", balance: "Balance", history: "History", mining: "Mining" }
-        };
-
-        function setTheme(mode) {
-            if(mode === 'light') document.body.classList.add('light-theme');
-            else document.body.classList.remove('light-theme');
-            localStorage.setItem('dosteam_theme', mode);
-            tg.setHeaderColor(mode === 'light' ? '#FFFFFF' : '#0A0A0C');
-        }
-
-        function setLanguage(lang) {
-            localStorage.setItem('dosteam_lang', lang);
-            const t = i18n[lang];
-            if(document.getElementById('reg-subtitle')) document.getElementById('reg-subtitle').innerText = t.reg_sub;
-            document.getElementById('settings-title').innerText = t.settings;
-            document.getElementById('label-lang').innerText = t.lang;
-            document.getElementById('btn-save').innerText = t.save;
-            document.getElementById('label-balance').innerText = t.balance;
-            document.getElementById('history-title').innerText = t.history;
-        }
 
         async function syncData() {
             const user = tg.initDataUnsafe.user || { id: "123456", first_name: "Admin" };
             setTheme(localStorage.getItem('dosteam_theme') || 'dark');
-            setLanguage(localStorage.getItem('dosteam_lang') || 'RU');
             if (localStorage.getItem('custom_photo')) document.getElementById('current-avatar').innerHTML = `<img src="${localStorage.getItem('custom_photo')}" class="w-full h-full object-cover">`;
 
             try {
                 const res = await fetch(`${API_URL}?action=getUser&id=${user.id}`);
                 const data = await res.json();
+                
                 if (!data.registered) {
                     document.getElementById('loader').style.display = 'none';
                     document.getElementById('registration-screen').style.display = 'flex';
+                } else if (data.needLogin) {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('login-screen').style.display = 'flex';
                 } else {
                     userLocal = data;
                     userLocal.id = user.id;
@@ -268,6 +224,36 @@
                     document.getElementById('loader').style.display = 'none';
                 }
             } catch (e) { document.getElementById('loader').style.display = 'none'; }
+        }
+
+        async function submitLogin() {
+            const pass = document.getElementById('login-pass').value;
+            const user = tg.initDataUnsafe.user || { id: "123456" };
+            document.getElementById('loader').style.display = 'flex';
+            try {
+                const res = await fetch(`${API_URL}?action=getUser&id=${user.id}&password=${encodeURIComponent(pass)}`);
+                const data = await res.json();
+                if(data.success) {
+                    userLocal = data;
+                    userLocal.id = user.id;
+                    document.getElementById('login-screen').style.display = 'none';
+                    renderApp(data);
+                } else {
+                    tg.showAlert("Неверный пароль!");
+                }
+                document.getElementById('loader').style.display = 'none';
+            } catch(e) { document.getElementById('loader').style.display = 'none'; }
+        }
+
+        async function submitRegistration() {
+            const name = document.getElementById('reg-name').value;
+            const group = document.getElementById('reg-group').value;
+            const unit = document.getElementById('reg-unit').value;
+            const pass = document.getElementById('reg-pass').value;
+            if(!name || !group || !pass) return tg.showAlert("Заполни все поля!");
+            document.getElementById('loader').style.display = 'flex';
+            await fetch(`${API_URL}?action=register&id=${tg.initDataUnsafe.user.id || '123456'}&name=${encodeURIComponent(name)}&group=${encodeURIComponent(group)}&unit=${encodeURIComponent(unit)}&password=${encodeURIComponent(pass)}`);
+            syncData();
         }
 
         function renderApp(data) {
@@ -287,41 +273,23 @@
             document.getElementById('user-rank').innerText = rank;
             document.getElementById('progress').style.width = progress + '%';
             document.getElementById('level-guide').innerText = next === "MAX" ? "MAX LEVEL" : `До уровня ${next} DC`;
-            document.getElementById('history-list').innerHTML = (data.history || []).map(h => `<div class="glass-card p-4 flex justify-between items-center italic"><span>${h.action}</span><span style="color: var(--accent)" class="font-black">+${h.amount}</span></div>`).join('');
+            document.getElementById('history-list').innerHTML = (data.history || []).map(h => `<div class="glass-card p-4 flex justify-between items-center"><span>${h.action}</span><span style="color: var(--accent)" class="font-black">+${h.amount}</span></div>`).join('');
         }
 
-        async function submitRegistration() {
-            const name = document.getElementById('reg-name').value;
-            const group = document.getElementById('reg-group').value;
-            const unit = document.getElementById('reg-unit').value;
-            if(!name || !group) return tg.showAlert("Заполни все поля!");
-            document.getElementById('loader').style.display = 'flex';
-            await fetch(`${API_URL}?action=register&id=${tg.initDataUnsafe.user.id || '123456'}&name=${encodeURIComponent(name)}&group=${encodeURIComponent(group)}&unit=${encodeURIComponent(unit)}`);
-            syncData();
-        }
-
-        function openProofModal(name, amount) {
-            currentTask = { name, amount };
-            document.getElementById('proof-modal').style.display = 'flex';
-        }
-
+        function openProofModal(name, amount) { currentTask = { name, amount }; document.getElementById('proof-modal').style.display = 'flex'; }
         async function submitTaskWithProof() {
             const proof = document.getElementById('proof-input').value;
-            if(!proof) return tg.showAlert("Напиши отчет!");
-            const user = tg.initDataUnsafe.user || { id: "123456" };
-            await fetch(`${API_URL}?action=request&id=${user.id}&name=${encodeURIComponent(userLocal.name)}&task=${encodeURIComponent(currentTask.name)}&amount=${currentTask.amount}&proof=${encodeURIComponent(proof)}`, {mode: 'no-cors'});
-            tg.showAlert("Запрос отправлен!");
-            document.getElementById('proof-modal').style.display = 'none';
+            if(!proof) return tg.showAlert("Напиши отчёт!");
+            await fetch(`${API_URL}?action=request&id=${userLocal.id}&name=${encodeURIComponent(userLocal.name)}&task=${encodeURIComponent(currentTask.name)}&amount=${currentTask.amount}&proof=${encodeURIComponent(proof)}`, {mode: 'no-cors'});
+            tg.showAlert("Отправлено!"); document.getElementById('proof-modal').style.display = 'none';
         }
 
         async function buyItem(name, price) {
             if (userLocal.balance < price) return tg.showAlert("Мало DC!");
-            tg.showConfirm(`Потратить ${price} DC?`, async (ok) => {
+            tg.showConfirm(`Купить ${name}?`, async (ok) => {
                 if (ok) {
-                    const user = tg.initDataUnsafe.user || { id: "123456" };
-                    await fetch(`${API_URL}?action=request&id=${user.id}&name=${encodeURIComponent(userLocal.name)}&task=${encodeURIComponent('КУПИЛ: ' + name)}&amount=${-price}&proof=Shop`, {mode: 'no-cors'});
+                    await fetch(`${API_URL}?action=request&id=${userLocal.id}&name=${encodeURIComponent(userLocal.name)}&task=${encodeURIComponent('КУПИЛ: ' + name)}&amount=${-price}&proof=Shop`, {mode: 'no-cors'});
                     tg.showAlert("Запрос отправлен!");
-                    syncData();
                 }
             });
         }
@@ -329,13 +297,13 @@
         async function loadLeaderboard() {
             const res = await fetch(`${API_URL}?action=getLeaderboard`);
             const data = await res.json();
-            document.getElementById('leaderboard-list').innerHTML = data.map((u, i) => `<div class="leader-item italic"><div class="flex items-center gap-4"><span class="text-[10px] opacity-30">${i + 1}</span><div><p class="text-xs font-bold">${i < 3 ? (i==0?'👑':'🥈') : ''} ${u.name}</p><p class="text-[8px] opacity-40 uppercase">${u.unit}</p></div></div><span class="text-xs font-black" style="color: var(--accent)">${u.balance} DC</span></div>`).join('');
+            document.getElementById('leaderboard-list').innerHTML = data.map((u, i) => `<div class="leader-item"><div class="flex items-center gap-4"><span class="text-[10px] opacity-30">${i + 1}</span><div><p class="text-xs font-bold">${i < 3 ? (i==0?'👑':'🥈') : ''} ${u.name}</p><p class="text-[8px] opacity-40 uppercase">${u.unit}</p></div></div><span class="text-xs font-black" style="color: var(--accent)">${u.balance} DC</span></div>`).join('');
         }
 
         async function loadMessages() {
             const res = await fetch(`${API_URL}?action=getMessages`);
             const msgs = await res.json();
-            document.getElementById('chat-box').innerHTML = msgs.map(m => `<div class="msg ${m.name === userLocal.name ? 'msg-own' : 'msg-other'} italic"><p class="msg-info italic" style="font-size:7px; opacity:0.5">${m.name} • ${m.unit}</p><p>${m.text}</p></div>`).join('');
+            document.getElementById('chat-box').innerHTML = msgs.map(m => `<div class="msg ${m.name === userLocal.name ? 'msg-own' : 'msg-other'}"><p class="msg-info" style="font-size:7px; opacity:0.5">${m.name} • ${m.unit}</p><p>${m.text}</p></div>`).join('');
             document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
         }
 
@@ -353,28 +321,18 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
         }
-
         function showSubTab(id) {
             document.querySelectorAll('.sub-tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.earn-tab-btn').forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
         }
-
-        function startScan() { tg.showScanQrPopup({ text: "Scan QR" }, async (text) => { const resp = await fetch(`${API_URL}?action=scanQR&id=${tg.initDataUnsafe.user.id || '123456'}&code=${text}`); tg.showAlert(await resp.text()); syncData(); return true; }); }
+        function startScan() { tg.showScanQrPopup({ text: "Scan QR" }, async (text) => { const resp = await fetch(`${API_URL}?action=scanQR&id=${userLocal.id}&code=${text}`); tg.showAlert(await resp.text()); syncData(); return true; }); }
         function openProfile() { document.getElementById('profile-settings').style.display = 'flex'; }
         function closeProfile() { document.getElementById('profile-settings').style.display = 'none'; }
+        function setTheme(m) { if(m === 'light') document.body.classList.add('light-theme'); else document.body.classList.remove('light-theme'); tg.setHeaderColor(m === 'light' ? '#FFFFFF' : '#0A0A0C'); localStorage.setItem('dosteam_theme', m); }
         function selectAvatar(src) { document.getElementById('current-avatar').innerHTML = `<img src="${src}" class="w-full h-full object-cover">`; localStorage.setItem('custom_photo', src); }
-        function uploadPhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('current-avatar').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                    localStorage.setItem('custom_photo', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+        function uploadPhoto(input) { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { document.getElementById('current-avatar').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`; localStorage.setItem('custom_photo', e.target.result); }; reader.readAsDataURL(input.files[0]); } }
 
         syncData();
     </script>
