@@ -9,30 +9,49 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0A0A0C; --blue: #3D5AFF; --glass: rgba(255, 255, 255, 0.03); }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; user-select: none; }
+        :root {
+            --bg: #0A0A0C;
+            --text: #ffffff;
+            --accent: #FFD700; /* Золотой */
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        .light-theme {
+            --bg: #FFFFFF;
+            --text: #1a1a1a;
+            --accent: #FFD700;
+            --glass: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.08);
+        }
+
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; transition: 0.3s; }
         .font-unbounded { font-family: 'Unbounded', sans-serif; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; }
-        .neo-gradient { background: linear-gradient(135deg, #3D5AFF 0%, #7000FF 100%); }
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 28px; }
+        .gold-gradient { background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%); }
         
         #registration-screen, #profile-settings { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; flex-direction: column; padding: 30px; }
-        .input-field { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 16px; width: 100%; color: white; outline: none; margin-bottom: 15px; }
+        .input-field { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 18px; padding: 16px; width: 100%; color: var(--text); outline: none; margin-bottom: 15px; }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        .sub-tab-content { display: none; }
+        .sub-tab-content.active { display: block; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-btn { opacity: 0.3; transition: 0.3s; }
-        .nav-btn.active { opacity: 1; color: var(--blue); }
+        .nav-btn { opacity: 0.3; transition: 0.3s; color: var(--text); }
+        .nav-btn.active { opacity: 1; color: var(--accent); }
         
-        .avatar-option { width: 60px; height: 60px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
-        .avatar-option.selected { border-color: var(--blue); transform: scale(1.1); }
+        .scan-btn-main { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -30px; border: 4px solid var(--bg); box-shadow: 0 10px 20px rgba(255,215,0,0.3); }
         
         .loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; justify-content: center; align-items: center; }
-        .loader { width: 35px; height: 35px; border: 3px solid rgba(255,255,255,0.1); border-left-color: var(--blue); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loader { width: 35px; height: 35px; border: 3px solid var(--glass-border); border-left-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        .scan-btn-main { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -30px; border: 4px solid var(--bg); box-shadow: 0 10px 20px rgba(61,90,255,0.3); }
+        .task-row { border-bottom: 1px solid var(--glass-border); padding: 12px 0; display: flex; justify-content: space-between; align-items: center; }
+        .earn-tab-btn { opacity: 0.4; border-bottom: 2px solid transparent; transition: 0.3s; white-space: nowrap; padding-bottom: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .earn-tab-btn.active { opacity: 1; border-color: var(--accent); color: var(--accent); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -43,137 +62,173 @@
     <!-- 1️⃣ РЕГИСТРАЦИЯ -->
     <section id="registration-screen">
         <div class="text-center mt-10 mb-10">
-            <h2 class="font-unbounded text-2xl font-black italic">DOSTEAM</h2>
+            <h2 class="font-unbounded text-2xl font-black italic text-gold" style="color: var(--accent)">DOSTEAM</h2>
             <p id="reg-subtitle" class="text-gray-500 text-sm italic mt-2">Регистрация в системе</p>
         </div>
         <input type="text" id="reg-name" class="input-field" placeholder="Имя и Фамилия">
         <input type="text" id="reg-group" class="input-field" placeholder="Группа (напр. ИТ-22)">
-        <select id="reg-unit" class="input-field bg-zinc-900">
+        <select id="reg-unit" class="input-field">
             <option value="Community">Community Unit</option>
             <option value="Event">Event Unit</option>
             <option value="Debate">Debate Unit</option>
         </select>
-        <button onclick="submitRegistration()" id="btn-create-acc" class="w-full py-5 neo-gradient rounded-3xl font-unbounded text-[10px] font-black uppercase tracking-widest mt-4">Создать аккаунт</button>
+        <button onclick="submitRegistration()" id="btn-create-acc" class="w-full py-5 gold-gradient rounded-3xl font-unbounded text-[10px] font-black uppercase tracking-widest mt-4 text-black shadow-lg">Создать аккаунт</button>
     </section>
 
-    <!-- 2️⃣ ПРОФИЛЬ И НАСТРОЙКИ -->
+    <!-- 2️⃣ ПРОФИЛЬ / НАСТРОЙКИ -->
     <section id="profile-settings" class="no-scrollbar overflow-y-auto">
         <div class="flex justify-between items-center mb-8">
-            <button onclick="closeProfile()" class="text-gray-400"><i class="fas fa-chevron-left text-xl"></i></button>
+            <button onclick="closeProfile()" class="opacity-50"><i class="fas fa-chevron-left text-xl"></i></button>
             <h2 id="settings-title" class="font-unbounded text-xs font-black uppercase italic">Настройки</h2>
             <div style="width:20px"></div>
         </div>
 
         <p id="label-avatar" class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-4">Аватар</p>
-        <div class="flex gap-4 mb-6 overflow-x-auto no-scrollbar pb-2">
-            <!-- Загрузка своей фотки -->
+        <div class="flex gap-4 mb-8 overflow-x-auto no-scrollbar pb-2">
             <label class="w-[60px] h-[60px] rounded-2xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer flex-shrink-0">
                 <i class="fas fa-camera text-xs mb-1"></i>
-                <span class="text-[8px] font-bold">UPLOAD</span>
-                <input type="file" id="photo-upload" class="hidden" accept="image/*" onchange="uploadPhoto(this)">
+                <input type="file" class="hidden" accept="image/*" onchange="uploadPhoto(this)">
             </label>
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="avatar-option" onclick="selectAvatar(this.src, this)">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" class="avatar-option" onclick="selectAvatar(this.src, this)">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" class="avatar-option" onclick="selectAvatar(this.src, this)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-[60px] h-[60px] rounded-2xl bg-zinc-800" onclick="selectAvatar(this.src)">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" class="w-[60px] h-[60px] rounded-2xl bg-zinc-800" onclick="selectAvatar(this.src)">
         </div>
 
-        <p id="label-lang" class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-4">Язык / Тіл / Language</p>
-        <div class="flex flex-col gap-3 mb-10">
-            <button onclick="setLanguage('RU')" class="w-full py-4 glass-card text-xs font-bold flex justify-between px-6">Русский <span>🇷🇺</span></button>
-            <button onclick="setLanguage('KZ')" class="w-full py-4 glass-card text-xs font-bold flex justify-between px-6">Қазақша <span>🇰🇿</span></button>
-            <button onclick="setLanguage('EN')" class="w-full py-4 glass-card text-xs font-bold flex justify-between px-6 opacity-60">English <span>🇺🇸</span></button>
+        <p class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-4">Тема / Theme</p>
+        <div class="flex gap-3 mb-8">
+            <button onclick="setTheme('dark')" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase border-yellow-500/50">Dark 🌑</button>
+            <button onclick="setTheme('light')" class="flex-1 py-4 glass-card text-[10px] font-bold uppercase border-white/10">Light ☀️</button>
         </div>
 
-        <button onclick="closeProfile()" id="btn-save" class="w-full py-4 neo-gradient rounded-2xl font-bold text-xs uppercase shadow-xl">Сохранить</button>
+        <p id="label-lang" class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-4">Язык / Тіл</p>
+        <div class="flex flex-col gap-2 mb-10">
+            <button onclick="setLanguage('RU')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic">Русский 🇷🇺</button>
+            <button onclick="setLanguage('KZ')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic">Қазақша 🇰🇿</button>
+            <button onclick="setLanguage('EN')" class="w-full py-4 glass-card text-xs font-bold text-left px-6 flex justify-between italic">English 🇺🇸</button>
+        </div>
+
+        <button onclick="closeProfile()" id="btn-save" class="w-full py-5 gold-gradient rounded-3xl font-black text-[10px] uppercase text-black shadow-xl">Сохранить</button>
     </section>
 
-    <!-- 3️⃣ ГЛАВНОЕ ПРИЛОЖЕНИЕ -->
+    <!-- 3️⃣ ГЛАВНОЕ -->
     <div id="main-app" style="display:none">
-        <header class="p-6 flex justify-between items-center">
+        <header class="p-6 flex justify-between items-center italic">
             <div class="flex items-center gap-3" onclick="openProfile()">
-                <div id="current-avatar" class="w-12 h-12 rounded-2xl neo-gradient flex items-center justify-center border-2 border-white/10 overflow-hidden">
-                    <i class="fas fa-user text-white"></i>
-                </div>
+                <div id="current-avatar" class="w-12 h-12 rounded-2xl gold-gradient flex items-center justify-center border-2 border-white/10 overflow-hidden text-black"><i class="fas fa-user"></i></div>
                 <div>
                     <h1 id="user-name" class="text-sm font-bold italic">...</h1>
-                    <p id="user-rank" class="text-[9px] font-black uppercase text-blue-500">Rookie</p>
+                    <p id="user-rank" class="text-[9px] font-black uppercase" style="color: var(--accent)">Rookie</p>
                 </div>
             </div>
-            <div class="text-right">
-                <p id="user-group" class="text-[10px] font-black text-white/40 uppercase tracking-tighter">...</p>
-            </div>
+            <p id="user-group" class="text-[10px] font-black opacity-40 uppercase tracking-tighter">...</p>
         </header>
 
         <main class="px-6">
             <!-- DASHBOARD -->
             <section id="dashboard" class="tab-content active">
-                <div class="glass-card p-8 text-center relative overflow-hidden mb-6 border-blue-500/10">
-                    <p id="label-balance" class="text-[9px] text-gray-500 uppercase font-black tracking-widest mb-4">Баланс</p>
+                <div class="glass-card p-10 text-center relative overflow-hidden mb-6 border-yellow-500/10 shadow-2xl shadow-yellow-500/5">
+                    <p id="label-balance" class="text-[9px] text-gray-500 uppercase font-black mb-4 tracking-widest">Баланс</p>
                     <div class="flex justify-center items-end gap-2 mb-6">
                         <span id="balance" class="text-6xl font-unbounded font-black tracking-tighter">0</span>
-                        <span class="text-blue-500 font-bold mb-1">DC</span>
+                        <span class="font-bold mb-1" style="color: var(--accent)">DC</span>
                     </div>
-                    <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                        <div id="progress" class="h-full neo-gradient transition-all duration-1000" style="width: 0%"></div>
-                    </div>
+                    <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden"><div id="progress" class="h-full gold-gradient" style="width: 0%"></div></div>
                 </div>
-
                 <h2 id="history-title" class="text-[10px] font-black text-gray-500 uppercase mb-4 ml-1 italic tracking-widest">История</h2>
                 <div id="history-list" class="space-y-3"></div>
             </section>
 
-            <!-- EARN -->
+            <!-- EARN (ALL TASKS) -->
             <section id="earn" class="tab-content">
-                <h2 id="mining-title" class="font-unbounded text-xl font-black mb-6 italic italic">Mining</h2>
-                <div class="space-y-4">
-                    <div class="glass-card p-5 flex justify-between items-center border-l-4 border-blue-500">
-                        <span id="task-1-title" class="text-xs font-bold uppercase italic">Пришел на ивент</span>
-                        <button onclick="tg.showAlert('Proof system coming soon')" class="px-4 py-2 neo-gradient rounded-xl text-[9px] font-black uppercase">+10 DC</button>
+                <div class="flex gap-4 overflow-x-auto no-scrollbar mb-6 border-b border-white/5 italic font-bold">
+                    <button id="tab-comm" onclick="showSubTab('sub-comm')" class="earn-tab-btn active flex-none">Community</button>
+                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none">Event</button>
+                    <button id="tab-debate" onclick="showSubTab('sub-debate')" class="earn-tab-btn flex-none">Debate</button>
+                    <button id="tab-gen" onclick="showSubTab('sub-gen')" class="earn-tab-btn flex-none">Общие</button>
+                </div>
+
+                <!-- COMMUNITY -->
+                <div id="sub-comm" class="sub-tab-content active space-y-4 pb-10 italic">
+                    <div class="glass-card p-4 space-y-3">
+                        <div class="task-row"><span>Пришел на встречу</span><button onclick="openProofModal('Пришел на встречу', 10)" class="text-yellow-500 font-bold text-[10px]">+10 DC</button></div>
+                        <div class="task-row"><span>Регистрация заранее</span><button onclick="openProofModal('Заранее', 3)" class="text-yellow-500 font-bold text-[10px]">+3 DC</button></div>
+                        <div class="task-row"><span>Задал вопрос спикеру</span><button onclick="openProofModal('Вопрос спикеру', 5)" class="text-yellow-500 font-bold text-[10px]">+5 DC</button></div>
+                        <div class="task-row"><span>Привел друга</span><button onclick="openProofModal('Привел друга', 15)" class="text-yellow-500 font-bold text-[10px]">+15 DC</button></div>
                     </div>
+                </div>
+
+                <!-- EVENT -->
+                <div id="sub-event" class="sub-tab-content space-y-4 pb-10 italic">
+                    <div class="glass-card p-4 space-y-3">
+                        <div class="task-row"><span>Помощь на регистрации</span><button onclick="openProofModal('Рега', 10)" class="text-yellow-500 font-bold text-[10px]">+10 DC</button></div>
+                        <div class="task-row"><span>Нашел подрядчика</span><button onclick="openProofModal('Подрядчик', 20)" class="text-yellow-500 font-bold text-[10px]">+20 DC</button></div>
+                        <div class="task-row"><span class="font-black">Ивент под ключ</span><button onclick="openProofModal('Под ключ', 50)" class="text-yellow-500 font-bold text-[10px]">+50 DC</button></div>
+                    </div>
+                </div>
+
+                <!-- DEBATE -->
+                <div id="sub-debate" class="sub-tab-content space-y-4 pb-10 italic">
+                    <div class="glass-card p-4 space-y-3">
+                        <div class="task-row"><span>Участие в дебатах</span><button onclick="openProofModal('Участие дебаты', 15)" class="text-yellow-500 font-bold text-[10px]">+15 DC</button></div>
+                        <div class="task-row"><span class="font-black">Победа в дебатах</span><button onclick="openProofModal('Победа дебаты', 30)" class="text-yellow-500 font-bold text-[10px]">+30 DC</button></div>
+                    </div>
+                </div>
+
+                <!-- GENERAL -->
+                <div id="sub-gen" class="sub-tab-content space-y-4 pb-10 italic">
+                    <div class="glass-card p-6 border-2 border-yellow-500/20 bg-yellow-500/5">
+                        <div class="flex justify-between items-center">
+                            <div><p class="text-xs font-black uppercase">Амбассадор</p><p class="text-[8px] opacity-50">Главный вклад</p></div>
+                            <button onclick="openProofModal('Амбассадор', 100)" class="px-5 py-2 gold-gradient rounded-xl text-black font-black text-[10px]">+100 DC</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SHOP -->
+            <section id="shop" class="tab-content">
+                <h2 class="text-xl font-unbounded font-black mb-6 italic">Shop</h2>
+                <div class="glass-card p-6 flex justify-between items-center mb-4">
+                    <div><h3 class="font-bold text-xs uppercase">Закрытый чат</h3><p class="text-[8px] opacity-50">Доступ в ядро</p></div>
+                    <button class="px-4 py-2 border border-yellow-500/30 rounded-lg text-[9px] font-black uppercase">100 DC</button>
                 </div>
             </section>
         </main>
 
         <!-- МЕНЮ -->
-        <nav class="fixed bottom-6 left-6 right-6 glass-card p-2 flex justify-between items-center z-50 shadow-2xl bg-zinc-900/80 backdrop-blur-xl border-white/5">
-            <button onclick="showTab('dashboard')" class="nav-btn active flex-1 flex flex-col items-center"><i class="fas fa-home-alt text-lg"></i></button>
+        <nav class="fixed bottom-6 left-6 right-6 glass-card p-2 flex justify-around items-center z-50 shadow-2xl bg-zinc-900/60 backdrop-blur-xl border-white/5">
+            <button onclick="showTab('dashboard')" class="nav-btn active flex-1 flex flex-col items-center"><i class="fas fa-wallet text-lg"></i></button>
             <button onclick="showTab('earn')" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-bolt-lightning text-lg"></i></button>
             
-            <!-- СКАНЕР -->
-            <div class="flex-1 flex flex-col items-center">
-                <button onclick="startScan()" class="scan-btn-main neo-gradient text-white">
-                    <i class="fas fa-qrcode text-xl"></i>
-                </button>
-            </div>
+            <button onclick="startScan()" class="scan-btn-main gold-gradient text-black">
+                <i class="fas fa-qrcode text-xl"></i>
+            </button>
             
             <button onclick="openProfile()" class="nav-btn flex-1 flex flex-col items-center"><i class="fas fa-gear text-lg"></i></button>
         </nav>
     </div>
 
+    <!-- Proof Modal -->
+    <div id="proof-modal" class="fixed inset-0 bg-black/95 z-[10001] hidden items-center justify-center p-6 backdrop-blur-xl">
+        <div class="glass-card p-8 w-full max-w-sm border-yellow-500/20 shadow-2xl">
+            <h3 class="font-unbounded text-[10px] mb-2 text-yellow-500 font-bold uppercase italic">Верификация</h3>
+            <p class="text-[9px] text-gray-500 mb-6 italic italic">Вставь ссылку на отчет или опиши результат:</p>
+            <textarea id="proof-input" class="w-full h-32 bg-black/40 border border-white/10 rounded-2xl p-4 text-xs text-white outline-none focus:border-yellow-500 mb-6 italic" placeholder="Напиши здесь..."></textarea>
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('proof-modal').style.display='none'" class="flex-1 text-[10px] font-black uppercase opacity-40">Cancel</button>
+                <button onclick="submitTaskWithProof()" class="flex-1 py-4 gold-gradient rounded-2xl text-[10px] font-black uppercase text-black">Submit</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.setHeaderColor('#0A0A0C');
-
         const API_URL = "https://script.google.com/macros/s/AKfycbzjb-F35Xe5AGO_2gRHEt4gINpdzDWvavj9_HUCPEDziHPrYaWe_a4075JhFo5x2UtW/exec";
 
-        // --- СИСТЕМА ПЕРЕВОДА ---
         const i18n = {
-            RU: {
-                reg_sub: "Регистрация в системе", create: "Создать аккаунт", settings: "Настройки",
-                avatar: "Аватар", lang: "Язык", save: "Сохранить", balance: "Твой баланс",
-                history: "Последние действия", mining: "Задания", task1: "Пришел на ивент"
-            },
-            KZ: {
-                reg_sub: "Жүйеге тіркелу", create: "Тіркелгі жасау", settings: "Баптаулар",
-                avatar: "Аватар", lang: "Тіл", save: "Сақтау", balance: "Теңгеріміңіз",
-                history: "Соңғы әрекеттер", mining: "Тапсырмалар", task1: "Кездесуге келдім"
-            },
-            EN: {
-                reg_sub: "System Registration", create: "Create Account", settings: "Settings",
-                avatar: "Avatar", lang: "Language", save: "Save", balance: "Your balance",
-                history: "Recent actions", mining: "Quests", task1: "Attended event"
-            }
+            RU: { reg_sub: "Регистрация в системе", create: "Создать аккаунт", settings: "Настройки", avatar: "Аватар", lang: "Язык", save: "Сохранить", balance: "Баланс", history: "История", mining: "Задания" },
+            KZ: { reg_sub: "Жүйеге тіркелу", create: "Тіркелгі жасау", settings: "Баптаулар", avatar: "Аватар", lang: "Тіл", save: "Сақтау", balance: "Теңгерім", history: "Тарихы", mining: "Тапсырмалар" },
+            EN: { reg_sub: "Registration", create: "Create Account", settings: "Settings", avatar: "Avatar", lang: "Language", save: "Save", balance: "Balance", history: "History", mining: "Mining" }
         };
 
         function setLanguage(lang) {
@@ -187,80 +242,64 @@
             document.getElementById('btn-save').innerText = t.save;
             document.getElementById('label-balance').innerText = t.balance;
             document.getElementById('history-title').innerText = t.history;
-            document.getElementById('mining-title').innerText = t.mining;
-            document.getElementById('task-1-title').innerText = t.task1;
-            tg.HapticFeedback.notificationOccurred('success');
+            tg.HapticFeedback.impactOccurred('light');
         }
 
-        // --- СКАНЕР ---
+        function setTheme(mode) {
+            if(mode === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+            localStorage.setItem('dosteam_theme', mode);
+            tg.setHeaderColor(mode === 'light' ? '#FFFFFF' : '#0A0A0C');
+        }
+
         function startScan() {
-            tg.showScanQrPopup({ text: "Scan Dosteam QR Code" }, (text) => {
+            tg.showScanQrPopup({ text: "Scan Dosteam QR" }, (text) => {
                 tg.closeScanQrPopup();
-                tg.showAlert("Scanned: " + text + ". Processing...");
-                // Здесь будет запрос к таблице для начисления баллов по коду
+                tg.showAlert("Scanned: " + text);
             });
         }
 
-        // --- АВАТАРКА ---
         function uploadPhoto(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     document.getElementById('current-avatar').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                    localStorage.setItem('custom_avatar', e.target.result);
+                    localStorage.setItem('custom_photo', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
-                tg.HapticFeedback.impactOccurred('medium');
             }
-        }
-
-        // --- ЯДРО СИНХРОНИЗАЦИИ ---
-        function loadCache() {
-            const cached = localStorage.getItem('dosteam_data');
-            const customAvatar = localStorage.getItem('custom_avatar');
-            if (customAvatar) document.getElementById('current-avatar').innerHTML = `<img src="${customAvatar}" class="w-full h-full object-cover">`;
-            
-            if (cached) {
-                const data = JSON.parse(cached);
-                if (data.registered) { renderApp(data); document.getElementById('loader').style.display = 'none'; return true; }
-            }
-            return false;
         }
 
         async function syncData() {
             const user = tg.initDataUnsafe.user || { id: "123456", first_name: "Admin" };
-            loadCache();
+            const customPhoto = localStorage.getItem('custom_photo');
             const lang = localStorage.getItem('dosteam_lang') || 'RU';
+            const theme = localStorage.getItem('dosteam_theme') || 'dark';
             setLanguage(lang);
+            setTheme(theme);
+
+            if (customPhoto) document.getElementById('current-avatar').innerHTML = `<img src="${customPhoto}" class="w-full h-full object-cover">`;
 
             try {
                 const res = await fetch(`${API_URL}?action=getUser&id=${user.id}`);
                 const data = await res.json();
-                
                 if (!data.registered) {
                     document.getElementById('loader').style.display = 'none';
                     document.getElementById('registration-screen').style.display = 'flex';
                 } else {
-                    localStorage.setItem('dosteam_data', JSON.stringify(data));
                     renderApp(data);
                     document.getElementById('loader').style.display = 'none';
                 }
-            } catch (e) {
-                console.error(e);
-                document.getElementById('loader').style.display = 'none';
-            }
+            } catch (e) { document.getElementById('loader').style.display = 'none'; }
         }
 
         async function submitRegistration() {
             const name = document.getElementById('reg-name').value;
             const group = document.getElementById('reg-group').value;
             const unit = document.getElementById('reg-unit').value;
-            const user = tg.initDataUnsafe.user || { id: "123456" };
-
-            if(!name || !group) return tg.showAlert("Please fill all fields!");
-
+            if(!name || !group) return tg.showAlert("Fill all fields!");
             document.getElementById('loader').style.display = 'flex';
-            await fetch(`${API_URL}?action=register&id=${user.id}&name=${encodeURIComponent(name)}&group=${encodeURIComponent(group)}&unit=${encodeURIComponent(unit)}`);
+            await fetch(`${API_URL}?action=register&id=${tg.initDataUnsafe.user.id}&name=${encodeURIComponent(name)}&group=${encodeURIComponent(group)}&unit=${encodeURIComponent(unit)}`);
             syncData();
         }
 
@@ -272,14 +311,7 @@
             document.getElementById('balance').innerText = data.balance;
             document.getElementById('user-rank').innerText = data.rank;
             document.getElementById('progress').style.width = (data.balance % 100) + '%';
-
-            const hList = document.getElementById('history-list');
-            hList.innerHTML = (data.history || []).map(h => `
-                <div class="glass-card p-4 flex justify-between items-center italic border-white/5">
-                    <span class="text-[10px] font-bold uppercase tracking-tight">${h.action}</span>
-                    <span class="text-blue-400 font-black">+${h.amount}</span>
-                </div>
-            `).join('');
+            document.getElementById('history-list').innerHTML = (data.history || []).map(h => `<div class="glass-card p-4 flex justify-between items-center italic"><span>${h.action}</span><span style="color: var(--accent)" class="font-black">+${h.amount}</span></div>`).join('');
         }
 
         function showTab(id) {
@@ -290,15 +322,16 @@
             tg.HapticFeedback.selectionChanged();
         }
 
+        function showSubTab(id) {
+            document.querySelectorAll('.sub-tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.earn-tab-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
         function openProfile() { document.getElementById('profile-settings').style.display = 'flex'; }
         function closeProfile() { document.getElementById('profile-settings').style.display = 'none'; }
-        
-        function selectAvatar(src, el) {
-            document.getElementById('current-avatar').innerHTML = `<img src="${src}" class="w-full h-full object-cover">`;
-            localStorage.setItem('custom_avatar', src);
-            document.querySelectorAll('.avatar-option').forEach(img => img.classList.remove('selected'));
-            el.classList.add('selected');
-        }
+        function selectAvatar(src) { document.getElementById('current-avatar').innerHTML = `<img src="${src}" class="w-full h-full object-cover">`; localStorage.setItem('custom_photo', src); }
 
         syncData();
     </script>
