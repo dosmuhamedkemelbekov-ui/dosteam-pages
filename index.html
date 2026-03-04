@@ -54,7 +54,7 @@
         <select id="reg-unit" class="input-field bg-zinc-900 text-white italic">
             <option value="Community">Community Unit</option>
             <option value="Event">Event Unit</option>
-            <option value="Debate">Debate Unit</option>
+            <option value="Media">Media Unit</option>
         </select>
         <input type="password" id="reg-pass" class="input-field" placeholder="Придумайте пароль">
         <button onclick="submitRegistration()" class="w-full py-5 gold-gradient rounded-3xl font-black text-black shadow-lg uppercase text-xs mt-4">Зарегистрироваться</button>
@@ -100,7 +100,7 @@
         <header class="p-6 flex justify-between items-center italic">
             <div class="flex items-center gap-3" onclick="openProfile()">
                 <div id="current-avatar" class="w-11 h-11 rounded-2xl gold-gradient flex items-center justify-center border border-white/10 overflow-hidden text-black shadow-lg"><i class="fas fa-user"></i></div>
-                <div><h1 id="user-name" class="text-sm font-bold italic italic">...</h1><p id="user-rank" class="text-[9px] font-black uppercase" style="color: var(--accent)">Rookie</p></div>
+                <div><h1 id="user-name" class="text-sm font-bold italic italic">...</h1><p id="user-rank" class="text-[9px] font-black uppercase" style="color: var(--accent)">Новичок</p></div>
             </div>
             <div class="text-right italic">
                 <p id="user-group" class="text-[10px] font-black opacity-30 uppercase tracking-tighter italic">...</p>
@@ -155,10 +155,10 @@
                 <div class="space-y-4 italic">
                     <div class="glass-card p-6 flex justify-between items-center italic">
                         <div><h3 class="font-bold text-xs uppercase italic italic">Чат Core</h3><p class="text-[9px] opacity-50 italic">Доступ в ядро</p></div>
-                        <button onclick="buyItem('Чат Core', 100)" class="btn-claim">100 DC</button>
+                        <button onclick="buyItem('Мерч EAGI', 100)" class="btn-claim">250 DC</button>
                     </div>
                     <div class="glass-card p-6 border-2 border-yellow-500 bg-yellow-500/5 italic">
-                        <div><h3 class="font-bold text-sm uppercase italic font-black text-gold" style="color: var(--accent)">Продюсирование</h3><button onclick="buyItem('Продюсирование', 1000)" class="px-5 py-3 gold-gradient rounded-xl text-black font-black text-[10px] mt-2 italic shadow-lg">1000 DC</button></div>
+                        <div><h3 class="font-bold text-sm uppercase italic font-black text-gold" style="color: var(--accent)">Meрч DOSTEAM</h3><button onclick="buyItem('Продюсирование', 1000)" class="px-5 py-3 gold-gradient rounded-xl text-black font-black text-[10px] mt-2 italic shadow-lg">350 DC</button></div>
                     </div>
                 </div>
             </section>
@@ -344,4 +344,5 @@
     </script>
 </body>
 </html>
+
 
