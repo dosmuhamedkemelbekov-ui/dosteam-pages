@@ -122,22 +122,28 @@
 
             <section id="earn" class="tab-content italic">
                 <div class="flex gap-4 overflow-x-auto no-scrollbar mb-6 border-b border-white/5 font-bold italic">
-                    <button id="tab-comm" onclick="showSubTab('sub-comm')" class="earn-tab-btn active flex-none italic">Community</button>
-                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none italic">Event</button>
                     <button id="tab-gen" onclick="showSubTab('sub-gen')" class="earn-tab-btn flex-none italic">Общие</button>
+                    <button id="tab-event" onclick="showSubTab('sub-event')" class="earn-tab-btn flex-none italic">Event</button>
+                    <button id="tab-media" onclick="showSubTab('sub-media')" class="earn-tab-btn flex-none italic">Media</button>
                 </div>
-                <div id="sub-comm" class="sub-tab-content active space-y-3 pb-10 italic">
-                    <div class="glass-card p-4 task-row italic italic"><span>Пришел на встречу</span><button onclick="openProofModal('Встреча', 10)" class="btn-claim">+10 DC</button></div>
+                <div id="sub-gen" class="sub-tab-content active space-y-3 pb-10 italic">
+                    <div class="glass-card p-4 task-row italic italic"><span>Пришел на еженедельную встречу</span><button onclick="openProofModal('Встреча', 5)" class="btn-claim">+10 DC</button></div>
                     <div class="task-row italic px-4 italic"><span>Привел друга</span><button onclick="openProofModal('Друг', 15)" class="btn-claim">+15 DC</button></div>
+                    <div class="task-row italic px-4 italic"><span>Закрыть свою задачу в срок</span><button onclick="openProofModal('В срок', 10)" class="btn-claim">+10 DC</button></div>
+                    <div class="task-row italic px-4 italic"><span>Помочь другому участнику с задачей</span><button onclick="openProofModal('Помощь другу', 5)" class="btn-claim">+10 DC</button></div>
+                    <div class="task-row italic px-4 italic"><span>Предложить новую идею для проекта</span><button onclick="openProofModal('Новая идея', 10)" class="btn-claim">+10 DC</button></div>
                 </div>
                 <div id="sub-event" class="sub-tab-content space-y-3 pb-10 italic">
-                    <div class="glass-card p-4 task-row italic"><span>Ивент под ключ</span><button onclick="openProofModal('Ивент', 50)" class="btn-claim">+50 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Повышение посещаемости мероприятий</span><button onclick="openProofModal('Ивент', 10)" class="btn-claim">+10 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Отвечал за регистрацию</span><button onclick="openProofModal('Ивент', 7)" class="btn-claim">+7 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Cбор обратной связи после ивента</span><button onclick="openProofModal('Ивент', 10)" class="btn-claim">+10 DC</button></div>
                 </div>
-                <div id="sub-gen" class="sub-tab-content space-y-3 pb-10 italic">
-                    <div class="glass-card p-6 border-2 border-yellow-500/20 bg-yellow-500/5 italic italic italic">
-                        <div class="flex justify-between items-center">
-                            <div><p class="text-xs font-black uppercase italic">Амбассадор</p></div>
-                            <button onclick="openProofModal('Амбассадор', 100)" class="px-5 py-2 gold-gradient rounded-xl text-black font-black text-[10px] shadow-lg">+100 DC</button>
+                <div id="sub-media" class="sub-tab-content space-y-3 pb-10 italic">
+                    <div class="glass-card p-4 task-row italic"><span>Cоздание поста</span><button onclick="openProofModal('Media', 10)" class="btn-claim">+10 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Cоздание stories</span><button onclick="openProofModal('Media', 5)" class="btn-claim">+5 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Mонтаж reels</span><button onclick="openProofModal('Media', 15)" class="btn-claim">+15 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Pазработка дизайна</span><button onclick="openProofModal('Media', 10)" class="btn-claim">+10 DC</button></div>
+                    <div class="glass-card p-4 task-row italic"><span>Cделать афишу мероприятия</span><button onclick="openProofModal('Media', 5)" class="btn-claim">+5 DC</button></div>
                         </div>
                     </div>
                 </div>
@@ -338,3 +344,4 @@
     </script>
 </body>
 </html>
+
